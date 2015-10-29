@@ -1,0 +1,23 @@
+<resources>
+    <string name="app_name">DASM - Práctica 1</string>
+
+    <!--fichiers-->
+    <string name="botónAñadir">Añadir</string>
+    <string name="hintTexto">Texto a añadir</string>
+    <string name="txtOnStart">Pulsa para mostrar el contenido del fichero</string>
+    <string name="txtFicheroVacio">El fichero está vacío</string>
+    <string name="txtErrorEscribir">No puedo escribir en la memoria externa</string>
+    <string name="txtErrorSD">Se ha seleccionado almacenamiento SD pero la tarjeta no está montada</string>
+    <!--menu options-->
+    <string name="opcionVaciar">Vaciar Fichero</string>
+    <string name="settings">Configuración</string>
+    <!--config options-->
+    <string name="storageOptions">Opciones de almacenamiento</string>
+    <string name="sdStorageTitle">Almacenamiento en tarjeta SD</string>
+    <string name="sdStorageSummary">Si se activa esta opción se almacenará la información en la tarjeta SD (si está disponible)</string>
+    <string name="fileNameStorageTitle">Nombre del fichero</string>
+    <string name="fileNameStorageSummary">Nombre del fichero en el que se guardará la información</string>
+
+    <string name="opcionAlmacenamientoExterno">Almacenamiento externo</string>
+    <string name="opcionAlmacenamientoLocal">Almacenamiento local</string>
+</resources>
