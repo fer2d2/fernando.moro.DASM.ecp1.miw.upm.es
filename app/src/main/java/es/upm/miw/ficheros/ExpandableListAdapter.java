@@ -2,26 +2,34 @@ package es.upm.miw.ficheros;
 
 import android.content.Context;
 import android.graphics.Typeface;
+import android.util.Log;
+import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
+import android.widget.Button;
 import android.widget.TextView;
 
+import java.io.File;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class ExpandableListAdapter extends BaseExpandableListAdapter {
 
     private Context context;
     private List<String> listDataHeader;
-    private HashMap<String, List<String>> listDataChild;
+    private HashMap<String, List<File>> listDataChild;
+    private RecyclerViewClickListener clickListener;
 
     public ExpandableListAdapter(Context context, List<String> listDataHeader,
-                                 HashMap<String, List<String>> listChildData) {
+                                 HashMap<String, List<File>> listDataChild, RecyclerViewClickListener clickListener) {
         this.context = context;
         this.listDataHeader = listDataHeader;
-        this.listDataChild = listChildData;
+        this.listDataChild = listDataChild;
+        this.clickListener = clickListener;
     }
 
     @Override
@@ -36,10 +44,11 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
     }
 
     @Override
-    public View getChildView(int groupPosition, final int childPosition,
+    public View getChildView(final int groupPosition, final int childPosition,
                              boolean isLastChild, View convertView, ViewGroup parent) {
 
-        final String childText = (String) getChild(groupPosition, childPosition);
+        File childFile = (File) getChild(groupPosition, childPosition);
+        final String childText = childFile.getName();
 
         if (convertView == null) {
             LayoutInflater infalInflater = (LayoutInflater) this.context
@@ -51,6 +60,19 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
                 .findViewById(R.id.storedFilesListItem);
 
         txtListChild.setText(childText);
+
+        Button buttonRemoveChild = (Button) convertView.findViewById(R.id.actionRemoveFile);
+        buttonRemoveChild.setFocusable(false);
+        buttonRemoveChild.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.i("BOTON", Integer.toString(childPosition));
+                Pair<Integer, Integer> element = new Pair<>(groupPosition, childPosition);
+                v.setTag(element);
+                clickListener.recyclerViewListClicked(v);
+            }
+        });
+
         return convertView;
     }
 
@@ -101,5 +123,10 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
     @Override
     public boolean isChildSelectable(int groupPosition, int childPosition) {
         return true;
+    }
+
+    public void update(List<String> listDataHeader, HashMap<String, List<File>> listDataChild) {
+        this.listDataHeader = listDataHeader;
+        this.listDataChild = listDataChild;
     }
 }
