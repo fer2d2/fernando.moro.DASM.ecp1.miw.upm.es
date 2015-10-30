@@ -29,6 +29,13 @@
         app:showAsAction="ifRoom|withText" />
 
     <item
+        android:id="@+id/actionManageFiles"
+        android:title="@string/opcionGestionarFicheros"
+        android:icon="@drawable/ic_insert_drive_file_white_24dp"
+        android:orderInCategory="100"
+        app:showAsAction="ifRoom|withText" />
+
+    <item
         android:id="@+id/accionConfigurar"
         android:title="@string/settings"
         android:icon="@drawable/ic_settings_white_48dp"

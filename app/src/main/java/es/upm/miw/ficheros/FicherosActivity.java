@@ -96,8 +96,6 @@ public class FicherosActivity extends AppCompatActivity {
      * @param v Botón añadir
      */
     public void accionAniadir(View v) {
-        /** Comprobar estado SD card **/
-        String estadoTarjetaSD = Environment.getExternalStorageState();
 
         if (!isExternalStorageSelectedAndMounted()) {
             Toast.makeText(this, R.string.txtErrorSD, Toast.LENGTH_SHORT).show();
@@ -128,7 +126,6 @@ public class FicherosActivity extends AppCompatActivity {
     public void mostrarContenido(View textviewContenidoFichero) {
         boolean hayContenido = false;
         File fichero = new File(RUTA_FICHERO);
-        String estadoTarjetaSD = Environment.getExternalStorageState();
         contenidoFichero.setText("");
 
         if (!fichero.exists()) {
@@ -164,7 +161,6 @@ public class FicherosActivity extends AppCompatActivity {
      * Vaciar el contenido del fichero, la línea de edición y actualizar
      */
     public void borrarContenido() {
-        String estadoTarjetaSD = Environment.getExternalStorageState();
 
         if (!isExternalStorageSelectedAndMounted()) {
             Toast.makeText(this, R.string.txtErrorSD, Toast.LENGTH_SHORT).show();
@@ -232,6 +228,10 @@ public class FicherosActivity extends AppCompatActivity {
         switch (item.getItemId()) {
             case R.id.accionVaciar:
                 borrarContenido();
+                break;
+            case R.id.actionManageFiles:
+                Intent manageFilesIntent = new Intent(this, FilesManagerActivity.class);
+                startActivity(manageFilesIntent);
                 break;
             case R.id.accionConfigurar:
                 Intent settingsIntent = new Intent(this, SettingsActivity.class);

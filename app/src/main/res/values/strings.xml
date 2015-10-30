@@ -20,4 +20,5 @@
 
     <string name="opcionAlmacenamientoExterno">Almacenamiento externo</string>
     <string name="opcionAlmacenamientoLocal">Almacenamiento local</string>
+    <string name="opcionGestionarFicheros">Gestionar ficheros</string>
 </resources>
