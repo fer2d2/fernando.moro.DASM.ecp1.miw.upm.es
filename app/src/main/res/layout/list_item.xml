@@ -12,6 +12,9 @@
         android:paddingTop="@dimen/activity_horizontal_margin"
         android:paddingBottom="@dimen/activity_horizontal_margin"
         android:paddingLeft="?android:attr/expandableListPreferredChildPaddingLeft"
+        android:clickable="false"
+        android:focusable="false"
+        android:longClickable="false"
         />
     <ImageButton
         android:id="@+id/actionRemoveFile"

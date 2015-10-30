@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Pair;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ExpandableListView;
@@ -35,10 +36,20 @@ public class FilesManagerActivity extends AppCompatActivity implements RecyclerV
     }
 
     @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_files_manager, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
                 onBackPressed();
+                return true;
+            case R.id.accionEliminarFicheros:
+                removeAllFiles();
+                reloadListAdapter();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
@@ -101,6 +112,14 @@ public class FilesManagerActivity extends AppCompatActivity implements RecyclerV
         }
     }
 
+    private void removeAllFiles() {
+        for (int groupNumber = 0; groupNumber < listDataHeader.size(); groupNumber++) {
+            for (int elementNumber = 0; elementNumber < listDataChild.get(listDataHeader.get(groupNumber)).size(); elementNumber++) {
+                this.removeFile(groupNumber, elementNumber);
+            }
+        }
+    }
+
     /**
      * Metodo que utilizamos para captar el listener de una vista anidada, el cual se ejecuta desde
      * el Adapter correspondiente.
@@ -108,15 +127,13 @@ public class FilesManagerActivity extends AppCompatActivity implements RecyclerV
     @Override
     public void recyclerViewListClicked(View v) {
         Pair<Integer, Integer> chosenFile = (Pair<Integer, Integer>) v.getTag();
-
-        // En lugar de eliminarlo del sistema de ficheros y del array, refrescamos el array entero.
-        // Es menos optimo pero evitamos que se pierda la sincronizacion.
         this.removeFile(chosenFile.first, chosenFile.second);
-        this.populateFileLists();
+        reloadListAdapter();
+    }
 
+    private void reloadListAdapter() {
+        this.populateFileLists();
         this.listAdapter.setListDataChild(this.listDataChild);
         this.listAdapter.notifyDataSetChanged();
     }
-
-
 }

@@ -8,7 +8,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
-import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
@@ -61,7 +60,6 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
         txtListChild.setText(childText);
 
         ImageButton buttonRemoveChild = (ImageButton) convertView.findViewById(R.id.actionRemoveFile);
-        buttonRemoveChild.setFocusable(false);
         buttonRemoveChild.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
