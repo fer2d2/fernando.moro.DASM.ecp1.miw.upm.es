@@ -21,4 +21,5 @@
     <string name="opcionAlmacenamientoExterno">Almacenamiento externo</string>
     <string name="opcionAlmacenamientoLocal">Almacenamiento local</string>
     <string name="opcionGestionarFicheros">Gestionar ficheros</string>
+    <string name="fileAlreadyDeleted">El fichero ya ha sido eliminado</string>
 </resources>

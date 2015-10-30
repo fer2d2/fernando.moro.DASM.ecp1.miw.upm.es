@@ -9,13 +9,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import java.io.File;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public class ExpandableListAdapter extends BaseExpandableListAdapter {
 
@@ -61,7 +60,7 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
 
         txtListChild.setText(childText);
 
-        Button buttonRemoveChild = (Button) convertView.findViewById(R.id.actionRemoveFile);
+        ImageButton buttonRemoveChild = (ImageButton) convertView.findViewById(R.id.actionRemoveFile);
         buttonRemoveChild.setFocusable(false);
         buttonRemoveChild.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -125,8 +124,7 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
         return true;
     }
 
-    public void update(List<String> listDataHeader, HashMap<String, List<File>> listDataChild) {
-        this.listDataHeader = listDataHeader;
+    public void setListDataChild(HashMap<String, List<File>> listDataChild) {
         this.listDataChild = listDataChild;
     }
 }

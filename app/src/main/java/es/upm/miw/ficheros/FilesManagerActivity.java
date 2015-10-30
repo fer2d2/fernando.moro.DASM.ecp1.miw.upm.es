@@ -1,8 +1,8 @@
 package es.upm.miw.ficheros;
 
 import android.os.Bundle;
+import android.os.Environment;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.util.Pair;
 import android.view.MenuItem;
 import android.view.View;
@@ -13,8 +13,6 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.Set;
 
 public class FilesManagerActivity extends AppCompatActivity implements RecyclerViewClickListener {
 
@@ -48,36 +46,37 @@ public class FilesManagerActivity extends AppCompatActivity implements RecyclerV
     }
 
     private void populateFileLists() {
-        listDataHeader = new ArrayList<String>();
-        listDataChild = new HashMap<String, List<File>>();
+        listDataHeader = new ArrayList<>();
+        listDataChild = new HashMap<>();
 
-        listDataHeader.add(getString(R.string.opcionAlmacenamientoExterno));
+        populateLocalFilesList();
+        populateExternalStorageFilesList();
+    }
+
+    private void populateExternalStorageFilesList() {
+        if (Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)) {
+            listDataHeader.add(getString(R.string.opcionAlmacenamientoExterno));
+            String externalStoragePath = getExternalFilesDir(null).getPath();
+            List<File> sdCardFiles = new ArrayList<>();
+
+            if (this.getFiles(externalStoragePath) != null) {
+                sdCardFiles = this.getFiles(externalStoragePath);
+            }
+
+            listDataChild.put(listDataHeader.get(listDataHeader.indexOf(getString(R.string.opcionAlmacenamientoExterno))), sdCardFiles);
+        }
+    }
+
+    private void populateLocalFilesList() {
         listDataHeader.add(getString(R.string.opcionAlmacenamientoLocal));
-
-        String externalStoragePath = getExternalFilesDir(null).getPath();
         String localStoragePath = getFilesDir().getPath();
-
-        List<File> sdCardFiles = new ArrayList<>();
         List<File> localStorageFiles = new ArrayList<>();
 
-        if(this.getFiles(externalStoragePath) != null) {
-            sdCardFiles = this.getFiles(externalStoragePath);
-        }
-
-        if(this.getFiles(localStoragePath) != null) {
+        if (this.getFiles(localStoragePath) != null) {
             localStorageFiles = this.getFiles(localStoragePath);
         }
 
-        listDataChild.put(listDataHeader.get(0), sdCardFiles);
-        listDataChild.put(listDataHeader.get(1), localStorageFiles);
-    }
-
-    private void removeFile(int groupNumber, int elementNumber) {
-        File chosenFile = (File) this.listAdapter.getChild(groupNumber, elementNumber);
-
-        if(!chosenFile.delete()) {
-            Toast.makeText(this, "El fichero ya ha sido eliminado", Toast.LENGTH_SHORT).show();
-        }
+        listDataChild.put(listDataHeader.get(listDataHeader.indexOf(getString(R.string.opcionAlmacenamientoLocal))), localStorageFiles);
     }
 
     private ArrayList<File> getFiles(String path) {
@@ -94,13 +93,30 @@ public class FilesManagerActivity extends AppCompatActivity implements RecyclerV
         return foundFiles;
     }
 
+    private void removeFile(int groupNumber, int elementNumber) {
+        File chosenFile = (File) this.listAdapter.getChild(groupNumber, elementNumber);
+
+        if (!chosenFile.delete()) {
+            Toast.makeText(this, R.string.fileAlreadyDeleted, Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    /**
+     * Metodo que utilizamos para captar el listener de una vista anidada, el cual se ejecuta desde
+     * el Adapter correspondiente.
+     */
     @Override
     public void recyclerViewListClicked(View v) {
         Pair<Integer, Integer> chosenFile = (Pair<Integer, Integer>) v.getTag();
+
+        // En lugar de eliminarlo del sistema de ficheros y del array, refrescamos el array entero.
+        // Es menos optimo pero evitamos que se pierda la sincronizacion.
         this.removeFile(chosenFile.first, chosenFile.second);
         this.populateFileLists();
 
-        this.listAdapter.update(this.listDataHeader, this.listDataChild);
+        this.listAdapter.setListDataChild(this.listDataChild);
         this.listAdapter.notifyDataSetChanged();
     }
+
+
 }

@@ -168,8 +168,6 @@ public class FicherosActivity extends AppCompatActivity {
         }
 
         try {  // Vaciar el fichero
-            /** SD card **/
-            // FileOutputStream fos = openFileOutput(NOMBRE_FICHERO, Context.MODE_PRIVATE);
             FileOutputStream fos = new FileOutputStream(RUTA_FICHERO);
             fos.close();
             Log.i("FICHERO", "opción Limpiar -> VACIAR el fichero");
